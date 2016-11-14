@@ -401,6 +401,10 @@ public class PlayService extends Service implements MediaPlayer.OnCompletionList
         mMediaPlayer = null;
     }
 
+    public void setOnMusicEventListener(OnMusicEventListener listener){
+        this.mListener = listener;
+    }
+
     /**
      * 音乐播放回调接口
      */

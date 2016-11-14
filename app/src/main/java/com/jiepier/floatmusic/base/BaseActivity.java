@@ -1,18 +1,25 @@
 package com.jiepier.floatmusic.base;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.jiepier.floatmusic.service.PlayService;
 import com.jiepier.floatmusic.util.AppManager;
 import com.jiepier.floatmusic.util.ResourceUtil;
 import com.jiepier.floatmusic.util.StatusBarUtil;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by JiePier on 16/11/12.
@@ -20,10 +27,14 @@ import com.jiepier.floatmusic.util.StatusBarUtil;
 
 public abstract class BaseActivity extends AppCompatActivity{
 
+    protected PlayService mPlayService;
+    private final String TAG = BaseActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(initContentView());
+        ButterKnife.bind(this);
         setTranslucentStatus(isApplyStatusBarTranslucency());
         setStatusBarColor(isApplyStatusBarColor());
         initUiAndListener();
@@ -95,7 +106,49 @@ public abstract class BaseActivity extends AppCompatActivity{
     }
 
     @Override protected void onDestroy() {
-        super.onDestroy();
         AppManager.getAppManager().finishActivity(this);
+        super.onDestroy();
     }
+
+    public void allowBindService(){
+        getApplicationContext().bindService(new Intent(this,PlayService.class),
+                mPlayServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    public void allowUnBindService(){
+        getApplicationContext().unbindService(mPlayServiceConnection);
+    }
+
+    public PlayService getPlayService(){
+        return mPlayService;
+    }
+
+    private ServiceConnection mPlayServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            mPlayService = ((PlayService.PlayBinder) iBinder).getService();
+            mPlayService.setOnMusicEventListener(mMusicEventListener);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mPlayService = null;
+        }
+    };
+
+    private PlayService.OnMusicEventListener mMusicEventListener = new PlayService.OnMusicEventListener() {
+        @Override
+        public void onPublish(int percent) {
+            BaseActivity.this.onPublish(percent);
+        }
+
+        @Override
+        public void onChange(int position) {
+            BaseActivity.this.onChange(position);
+        }
+    };
+
+    public abstract void onPublish(int percent);
+
+    public abstract void onChange(int position);
 }

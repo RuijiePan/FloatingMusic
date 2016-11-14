@@ -2,8 +2,11 @@ package com.jiepier.floatmusic.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+
+import com.jiepier.floatmusic.service.PlayService;
 
 /**
  * Created by JiePier on 16/11/12.
@@ -20,6 +23,8 @@ public class App extends Application{
         super.onCreate();
 
         sContext = this;
+
+        startService(new Intent(this, PlayService.class));
 
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
