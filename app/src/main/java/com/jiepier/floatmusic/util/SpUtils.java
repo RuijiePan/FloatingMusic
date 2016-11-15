@@ -6,9 +6,7 @@ import android.content.SharedPreferences;
 import com.jiepier.floatmusic.base.App;
 
 /**
- * 2015年8月15日 16:34:37
- * 博文地址：http://blog.csdn.net/u010156024
- *
+ * Created by JiePier on 16/11/12.
  */
 public class SpUtils {
 

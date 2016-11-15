@@ -1,8 +1,10 @@
 package com.jiepier.floatmusic.ui;
 
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,33 +14,32 @@ import android.widget.TextView;
 import com.jiepier.floatmusic.R;
 import com.jiepier.floatmusic.adapter.MusicAdapter;
 import com.jiepier.floatmusic.base.BaseActivity;
+import com.jiepier.floatmusic.bean.Music;
+import com.jiepier.floatmusic.util.MusicUtil;
+import com.jiepier.floatmusic.util.RecyclerViewDivider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+/**
+ * Created by JiePier on 16/11/12.
+ */
 
-    @BindView(R.id.iv_play_icon)
-    ImageView ivPlayIcon;
+public class MainActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener{
+
+    @BindView(R.id.iv_play)
+    ImageView ivPlay;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.play_progress)
+    SeekBar playProgress;
     @BindView(R.id.tv_play_title)
     TextView tvPlayTitle;
     @BindView(R.id.tv_play_artist)
     TextView tvPlayArtist;
-    @BindView(R.id.iv_pre)
-    ImageView ivPre;
-    @BindView(R.id.iv_play)
-    ImageView ivPlay;
-    @BindView(R.id.iv_next)
-    ImageView ivNext;
-    @BindView(R.id.play_progress)
-    SeekBar playProgress;
-    @BindView(R.id.rl_controller)
-    RelativeLayout rlController;
     @BindView(R.id.activity_main)
     RelativeLayout activityMain;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
 
     private boolean isPause;
     private MusicAdapter mMusicAdapter;
@@ -50,8 +51,21 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initUiAndListener() {
+
+        /*mMusicAdapter = new MusicAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mMusicAdapter);
+        recyclerView.addItemDecoration(new RecyclerViewDivider(
+                this, RecyclerViewDivider.VERTICAL_LIST));
+        mMusicAdapter.setOnItemClickLisetener(
+                new MusicAdapter.OnItemClickLisetener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        mPlayService.play(position);
+                    }
+                });*/
+
     }
 
     @Override
@@ -66,12 +80,16 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onPublish(int percent) {
-
+        if (isPause)
+            return;
+        playProgress.setProgress(percent);
     }
 
     @Override
     public void onChange(int position) {
-
+        Music music = MusicUtil.sMusicList.get(position);
+        tvPlayTitle.setText(music.getTitle());
+        tvPlayArtist.setText(music.getArtist());
     }
 
     @Override
@@ -108,16 +126,34 @@ public class MainActivity extends BaseActivity {
                 mPlayService.pre();
                 break;
             case R.id.iv_play:
-                if (mPlayService.isPlaying()){
+                if (mPlayService.isPlaying()) {
                     mPlayService.pause();
-                    ivPlayIcon.setImageResource(android.R.drawable.ic_media_play);
-                }else {
+                    isPause = true;
+                    ivPlay.setImageResource(android.R.drawable.ic_media_pause);
+                } else {
                     mPlayService.resume();
+                    isPause = false;
+                    ivPlay.setImageResource(android.R.drawable.ic_media_play);
                 }
                 break;
             case R.id.iv_next:
                 getPlayService().next();
                 break;
         }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        //seekBar.setProgress(seekBar.getProgress());
     }
 }

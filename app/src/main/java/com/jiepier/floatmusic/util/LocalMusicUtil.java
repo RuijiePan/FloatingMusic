@@ -39,13 +39,14 @@ public class LocalMusicUtil {
         //select * from xx where data like dirName order by modify_time
         ArrayList<Music> musicList = new ArrayList<>();
         Cursor cursor = App.sContext.getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,
-                MediaStore.Audio.Media.DATA + " like ",
-                new String[]{dirName + "%"},
-                MediaStore.Audio.Media.DATE_MODIFIED);
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null,
+                MediaStore.Audio.Media.DATA + " like ?",
+                new String[] { dirName + "%" },
+                MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
 
-        if (cursor == null)
+        if (cursor == null) {
             return musicList;
+        }
 
 
         Music music;
@@ -72,6 +73,7 @@ public class LocalMusicUtil {
             music.setImage(getAlbumImage(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID))));
             musicList.add(music);
         }
+        cursor.close();
         return musicList;
     }
 

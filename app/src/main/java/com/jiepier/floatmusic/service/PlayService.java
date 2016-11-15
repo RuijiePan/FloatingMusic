@@ -16,6 +16,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.jiepier.floatmusic.R;
@@ -83,7 +84,9 @@ public class PlayService extends Service implements MediaPlayer.OnCompletionList
 
         Uri uri = Uri.parse(MusicUtil.sMusicList.get(
                 mPlayingPosition).getUri());
-        mMediaPlayer = MediaPlayer.create(PlayService.this,uri);
+
+        //Log.w("haha",uri+"");
+        mMediaPlayer = MediaPlayer.create(this,uri);
         mMediaPlayer.setOnCompletionListener(this);
         mProgressUpdatedListener.execute(mPublishProgressRunnable);
 
@@ -198,7 +201,8 @@ public class PlayService extends Service implements MediaPlayer.OnCompletionList
             while (true){
                 if (mMediaPlayer != null && mMediaPlayer.isPlaying() &&
                         mListener != null){
-                    mListener.onPublish(mMediaPlayer.getCurrentPosition());
+                    mListener.onPublish(
+                            mMediaPlayer.getCurrentPosition());
                 }
                 /*
 			 * SystemClock.sleep(millis) is a utility function very similar
@@ -409,8 +413,8 @@ public class PlayService extends Service implements MediaPlayer.OnCompletionList
      * 音乐播放回调接口
      */
     public interface OnMusicEventListener {
-        public void onPublish(int percent);
+        void onPublish(int percent);
 
-        public void onChange(int position);
+        void onChange(int position);
     }
 }

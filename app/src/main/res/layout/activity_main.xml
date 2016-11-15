@@ -4,10 +4,6 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:gravity="center|center_vertical|center_horizontal"
     tools:context="com.jiepier.floatmusic.ui.MainActivity">
 
@@ -23,10 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/main_dark"
-        android:paddingBottom="2dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="2dp" >
+        android:paddingRight="10dp">
 
         <ImageView
             android:id="@+id/iv_play_icon"
@@ -34,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_audiotrack_red_400_24dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -54,7 +48,6 @@
                 android:id="@+id/tv_play_artist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -95,7 +88,7 @@
             android:layout_below="@id/iv_play_icon"
             android:layout_marginLeft="-10dp"
             android:layout_marginRight="-10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="12dp"
             android:max="100"
             android:progressDrawable="@drawable/play_progressbar_green"
             android:thumb="@null" />

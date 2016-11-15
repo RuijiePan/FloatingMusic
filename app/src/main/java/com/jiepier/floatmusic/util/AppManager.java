@@ -6,6 +6,7 @@ import android.content.Context;
 import java.util.Stack;
 
 /**
+ * Created by JiePier on 16/11/12.
  * 应用程序Activity管理类：用于Activity管理和应用程序退出
  */
 public class AppManager {
@@ -21,7 +22,9 @@ public class AppManager {
    */
   public static AppManager getAppManager() {
     if (instance == null) {
-      instance = new AppManager();
+      synchronized (AppManager.class) {
+        instance = new AppManager();
+      }
     }
     return instance;
   }
