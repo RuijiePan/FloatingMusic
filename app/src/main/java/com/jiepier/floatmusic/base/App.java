@@ -24,8 +24,6 @@ public class App extends Application{
 
         sContext = this;
 
-        startService(new Intent(this, PlayService.class));
-
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(dm);

@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements SeekBar.OnSeekBarChang
     @Override
     public void initUiAndListener() {
 
-        /*mMusicAdapter = new MusicAdapter();
+        mMusicAdapter = new MusicAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mMusicAdapter);
@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity implements SeekBar.OnSeekBarChang
                     public void onItemClick(int position) {
                         mPlayService.play(position);
                     }
-                });*/
+                });
 
     }
 

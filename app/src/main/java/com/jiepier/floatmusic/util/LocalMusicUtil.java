@@ -44,9 +44,8 @@ public class LocalMusicUtil {
                 new String[] { dirName + "%" },
                 MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
 
-        if (cursor == null) {
+        if (cursor == null)
             return musicList;
-        }
 
 
         Music music;
